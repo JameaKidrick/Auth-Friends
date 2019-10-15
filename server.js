@@ -60,9 +60,10 @@ function authenticator(req, res, next) {
   }
 }
 
+// returns a token to be added to the header of all other requests. Pass in the credentials as the body of the request
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  if (username === 'Lambda School' && password === 'i<3Lambd4') {
+  if (username === 'mea' && password === 'mea') {
     req.loggedIn = true;
     res.status(200).json({
       payload: token
@@ -74,12 +75,14 @@ app.post('/api/login', (req, res) => {
   }
 });
 
+// returns the list of friends
 app.get('/api/friends', authenticator, (req, res) => {
   setTimeout(() => {
     res.send(friends);
   }, 1000);
 });
 
+// returns the friend with the id passed as part of the URL
 app.get('/api/friends/:id', authenticator, (req, res) => {
   const friend = friends.find(f => f.id == req.params.id);
 
@@ -90,6 +93,7 @@ app.get('/api/friends/:id', authenticator, (req, res) => {
   }
 });
 
+// creates a friend and return the new list of friends. Pass the friend as the body of the request (the second argument passed to axios.post)
 app.post('/api/friends', authenticator, (req, res) => {
   const friend = { id: getNextId(), ...req.body };
 
@@ -98,6 +102,7 @@ app.post('/api/friends', authenticator, (req, res) => {
   res.send(friends);
 });
 
+// updates the friend using the id passed as part of the URL. Send the an object with the updated information as the body of the request (the second argument passed to axios.put)
 app.put('/api/friends/:id', authenticator, (req, res) => {
   const { id } = req.params;
 
@@ -117,6 +122,7 @@ app.put('/api/friends/:id', authenticator, (req, res) => {
   }
 });
 
+// removes the friend using the id passed as part of the URL (123 in example)
 app.delete('/api/friends/:id', authenticator, (req, res) => {
   const { id } = req.params;
 
