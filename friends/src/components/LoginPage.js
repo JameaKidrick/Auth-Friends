@@ -41,12 +41,14 @@ class LoginPage extends React.Component {
         <form onSubmit={this.login}>
           <input 
           name='username'
+          placeholder='username'
           type='text'
           value={this.state.credentials.username}
           onChange={this.handleChange}
           />
           <input 
           name='password'
+          placeholder='password'
           type='password'
           value={this.state.credentials.password}
           onChange={this.handleChange}
