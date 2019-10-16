@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
+import UpdateFriend from './UpdateFriend'
+
 const FriendsListPage = () => {
   const [friend, setFriend] = useState([])
   const [addFriend, setAddFriend] = useState({name: '', age: 0, email: ''})
@@ -34,44 +36,44 @@ const FriendsListPage = () => {
   return(
 
     <div>
-    {console.log(friend)}
       <h1>Hello FriendsListPage!</h1>
       <div>
-        Add a New Friend!
+        <h3 style={{color: 'lime'}}>Add a New Friend!</h3>
         <form onSubmit={handleSubmit}>
           <input 
           name='name'
           placeholder='name'
           type='text'
           onChange={handleChange}
-          // value={friend.name}
+          value={friend.name}
           />
           <input 
           name='age'
           placeholder='age'
           type='text'
           onChange={handleChange}
-          // value={friend.age}
+          value={friend.age}
           />
           <input 
           name='email'
           placeholder='email'
           type='text'
           onChange={handleChange}
-          // value={friend.email}
+          value={friend.email}
           />
           <button>Add Friend</button>
         </form>
       </div>
       {friend.map(item => {
         return(
-          <>
-            <button>Edit</button>
-            <button>Delete</button>
+          <div style={{border:'2px solid red'}}>
+            <h2 style={{color:'red'}}>{item.id}</h2>
+            <h3 style={{color: 'mediumblue'}}>{`Update ${item.name}'s Information`}</h3>
+            <UpdateFriend item={item} />
             <h3>{item.name}</h3>
             <p>{item.age}</p>
             <p>{item.email}</p>
-          </>
+          </div>
         )
       })}
     </div>

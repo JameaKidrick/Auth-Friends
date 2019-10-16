@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import ErrorPage from './components/ErrorPage';
 import PrivateRoute from './components/PrivateRoute';
 import FriendsListPage from './components/FriendsListPage';
+// import Friend from './components/Friend'
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path ='/api/login' component={LoginPage} />
-          <PrivateRoute path='/api/friends' component={FriendsListPage} />
+          <PrivateRoute exact path='/api/friends' component={FriendsListPage} />
+          {/* <PrivateRoute path='/api/friends/:id' component={Friend} /> */}
           <Route component={ErrorPage} />
         </Switch>
       </div>
