@@ -20,6 +20,7 @@ const UpdateFriends = props => {
     .then(response => {
       console.log('UPDATE FRIEND', response.data)
       // setUpdateFriend(response.data[id-1])
+      props.fetchData()
     })
     .catch(error => console.log('UPDATE ERROR', error))
     setUpdateFriend({name: '', age: 0, email: ''})
@@ -31,6 +32,7 @@ const UpdateFriends = props => {
       .then(response => {
         console.log('DELETE FRIEND', response.data)
       //   setUpdateFriend(response.data[id-1])
+        props.fetchData()
       })
       .catch(error => console.log('UPDATE ERROR', error))
   }

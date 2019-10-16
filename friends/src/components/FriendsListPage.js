@@ -23,7 +23,7 @@ const FriendsListPage = () => {
     setAddFriend({name: '', age: 0, email: ''})
   }
 
-  useEffect(() => {
+  const fetchData = () => {
     axiosWithAuth()
       .get('/api/friends')
       .then(response => {
@@ -31,6 +31,10 @@ const FriendsListPage = () => {
         setFriend(response.data)
       })
       .catch(error => console.log('CALL ERROR', error))
+  }
+
+  useEffect(() => {
+    fetchData();
   }, [])
 
   return(
@@ -66,10 +70,10 @@ const FriendsListPage = () => {
       </div>
       {friend.map(item => {
         return(
-          <div style={{border:'2px solid red'}}>
+          <div style={{border:'2px solid red'}} key={item.id}>
             <h2 style={{color:'red'}}>{item.id}</h2>
             <h3 style={{color: 'mediumblue'}}>{`Update ${item.name}'s Information`}</h3>
-            <UpdateFriend item={item} />
+            <UpdateFriend item={item} fetchData={fetchData} />
             <h3>{item.name}</h3>
             <p>{item.age}</p>
             <p>{item.email}</p>
