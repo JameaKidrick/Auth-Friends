@@ -27,7 +27,7 @@ class LoginPage extends React.Component {
     axiosWithAuth()
       .post('/api/login', this.state.credentials)
       .then(response => {
-        console.log(response);
+        // console.log(response);
         localStorage.setItem('token', response.data.payload);
         this.props.history.push('/api/friends')
       })
