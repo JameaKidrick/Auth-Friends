@@ -24,27 +24,11 @@ const RegisterPage = props => {
 
 
   return(
-    <div>
-    Hello RegisterForm!       
-      <form onSubmit={registerSubmit}>         
-        <input 
-        name='username'
-        placeholder='username'
-        type='text'
-        onChange={handleChange}
-        defaultValue={credentials.username}
-        />
-        <input 
-        name='password'
-        placeholder='password'
-        type='password'
-        onChange={handleChange}
-        defaultValue={credentials.password}
-        
-        />
-        <button>Submit</button>
-      </form>
-    </div>
+    <RegisterForm 
+      handleChange={handleChange} 
+      registerSubmit={registerSubmit} 
+      credentials={credentials} 
+    />
   )
   
 }

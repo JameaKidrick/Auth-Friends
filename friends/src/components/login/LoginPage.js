@@ -1,15 +1,14 @@
 import React from 'react';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
-// REFACTOR TO FORMIK AND YUP
-// STYLE WITH MATERIAL UI
-
+import LoginForm from './LoginForm';
 
 class LoginPage extends React.Component {
   state = {
     credentials: {
       username: '',
-      password: ''
+      password: '',
+      id: 0
     }
   };
 
@@ -22,7 +21,9 @@ class LoginPage extends React.Component {
     });
   };
 
-  login = e => {
+  
+
+  loginSubmit = e => {
     e.preventDefault();
     if(localStorage.getItem('token')){
       window.alert('You are already logged in. Please log out before relogging.')
@@ -30,9 +31,9 @@ class LoginPage extends React.Component {
       axiosWithAuth()
       .post('/api/login', this.state.credentials)
       .then(response => {
-        // console.log(response);
+        // console.log(response.data.id);
         localStorage.setItem('token', response.data.payload);
-        this.props.history.push('/')
+        this.props.history.push(`/myprofile/${response.data.id}`)
       })
       .catch(error => console.log(error))
     }
@@ -40,26 +41,11 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div>
-        Hello LoginPage!
-        <form onSubmit={this.login}>
-          <input 
-          name='username'
-          placeholder='username'
-          type='text'
-          value={this.state.credentials.username}
-          onChange={this.handleChange}
-          />
-          <input 
-          name='password'
-          placeholder='password'
-          type='password'
-          value={this.state.credentials.password}
-          onChange={this.handleChange}
-          />
-          <button>Submit</button>
-        </form>
-      </div>
+      <LoginForm 
+        handleChange={this.handleChange} 
+        loginSubmit={this.loginSubmit}
+        credentials={this.state.credentials}
+      />
     )
   }
 }
