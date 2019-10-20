@@ -1,1 +1,1 @@
-export { START_FETCHING, FETCH_FAILURE, FETCH_SUCCESS, REGISTRATION_SUCCESS, getUsersData, registerUser } from './GitFriendsActions';
+export { START_FETCHING, FETCH_FAILURE, FETCH_SUCCESS, REGISTRATION_SUCCESS, LOGIN_SUCCESS, getUsersData, registerUser, loginUser } from './GitFriendsActions';

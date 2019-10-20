@@ -1,53 +1,50 @@
-import React from 'react';
-import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions'
 
 import LoginForm from './LoginForm';
 
-class LoginPage extends React.Component {
-  state = {
-    credentials: {
-      username: '',
-      password: '',
-      id: 0
-    }
+const LoginPage = ({history, loginUser, isFetching, error}) => {
+  const [credentials, setCredentials] = useState({username: '', password: ''})
+
+  const handleChange = e => {
+    setCredentials({...credentials, [e.target.name]: e.target.value})
   };
 
-  handleChange = e => {
-    this.setState({
-      credentials: {
-        ...this.state.credentials,
-        [e.target.name]: e.target.value
-      }
-    });
-  };
-
-  
-
-  loginSubmit = e => {
+  const loginSubmit = e => {
     e.preventDefault();
     if(localStorage.getItem('token')){
       window.alert('You are already logged in. Please log out before relogging.')
     }else{
-      axiosWithAuth()
-      .post('/api/login', this.state.credentials)
-      .then(response => {
-        console.log(response);
-        localStorage.setItem('token', response.data.payload);
-        this.props.history.push(`/myprofile/${response.data.id}`)
-      })
-      .catch(error => console.log(error))
+      loginUser(credentials, history);
+      setCredentials({username: '', password: ''})
     }
   }
 
-  render() {
-    return (
+  if(isFetching){
+    return <h2>Logging in User...</h2>
+  }
+
+  return (
+    <div>
+      {error && <p>{error}</p>}
       <LoginForm 
-        handleChange={this.handleChange} 
-        loginSubmit={this.loginSubmit}
-        credentials={this.state.credentials}
+        handleChange={handleChange} 
+        loginSubmit={loginSubmit}
+        credentials={credentials}
       />
-    )
+    </div>
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    isFetching: state.isFetching,
+    error: state.error
   }
 }
 
-export default LoginPage;
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(LoginPage);

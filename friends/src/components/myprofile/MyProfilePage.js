@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions'
 
-const MyProfilePage = () => {
+const MyProfilePage = props => {
 
   // useEffect(() => {
   //   axiosWithAuth()
@@ -14,9 +16,22 @@ const MyProfilePage = () => {
 
   return (
     <div>
+      {console.log(props.activeUser)}
+      {/* {console.log(props.users)} */}
       Hello MyProfilePage!
+      {/* {props.activeUser.username} */}
     </div>
   )
 }
 
-export default MyProfilePage;
+const mapStatToProps = state => {
+  return{
+    activeUser: state.activeUser,
+    users: state.users
+  }
+}
+
+export default connect(
+  mapStatToProps,
+  { }
+)(MyProfilePage);

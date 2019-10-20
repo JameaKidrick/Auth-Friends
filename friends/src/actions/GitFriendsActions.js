@@ -5,6 +5,7 @@ export const START_FETCHING = 'START_FETCHING';
 export const FETCH_FAILURE = 'FETCH_FAILURE';
 export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 // ACTION CREATORS
 export const getUsersData = () => dispatch => {
@@ -31,5 +32,20 @@ export const registerUser = (credentials, history) => dispatch => {
         dispatch({ type: FETCH_FAILURE, payload: errorAlert })
       }else{
         dispatch({ type: FETCH_FAILURE, payload: error.response })}
+    })
+}
+
+export const loginUser = (credentials, history) => dispatch => {
+  dispatch({ type: START_FETCHING });
+  axiosWithAuth()
+    .post('/api/login', credentials)
+    .then(response => {
+      dispatch({ type: LOGIN_SUCCESS, payload: response.data})
+      localStorage.setItem('token', response.data.payload);
+      history.push(`/myprofile/${response.data.id}`)
+
+    })
+    .catch(error => {
+      dispatch({ type: FETCH_FAILURE, payload: error.response })
     })
 }

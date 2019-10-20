@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { axiosWithAuth } from '../../utils/axiosWithAuth';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions'
 
 import RegisterForm from './RegisterForm'
 
-const RegisterPage = ({history, match, registerUser, isFetching, error}) => {
+const RegisterPage = ({history, registerUser, isFetching, error}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
   const handleChange = e => {
@@ -14,12 +13,13 @@ const RegisterPage = ({history, match, registerUser, isFetching, error}) => {
 
   const registerSubmit = e => {
     e.preventDefault();
-    registerUser(credentials, history);
+    if(localStorage.getItem('token')){
+      window.alert('You are logged in. Please log out before registering a new account.')
+    }else{
+      registerUser(credentials, history);
     setCredentials({username: '', password: ''})
-    
+    }
   }
-
-
 
   if(isFetching){
     return <h2>Registering User...</h2>
@@ -40,7 +40,6 @@ const RegisterPage = ({history, match, registerUser, isFetching, error}) => {
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
     isFetching: state.isFetching,
     error: state.error
   }
