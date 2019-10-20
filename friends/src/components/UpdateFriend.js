@@ -18,7 +18,7 @@ const UpdateFriends = props => {
     axiosWithAuth()
     .put(`/api/friends/${id}`, updateFriend)
     .then(response => {
-      console.log('UPDATE FRIEND', response.data)
+      console.log('UPDATE FRIEND', response)
       // setUpdateFriend(response.data[id-1])
       props.fetchData()
     })

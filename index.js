@@ -8,48 +8,36 @@ const token =
 
 let nextId = 7;
 
-let friends = [
+let users = [
   {
     id: 1,
-    name: 'Ben',
-    age: 30,
-    email: 'ben@lambdaschool.com'
+    username: 'kimfox',
+    password: 'love1'
   },
   {
     id: 2,
-    name: 'Austen',
-    age: 45,
-    email: 'austen@lambdaschool.com'
+    username: 'frederickperez',
+    password: 'lillian'
   },
   {
     id: 3,
-    name: 'Ryan',
-    age: 15,
-    email: 'ryan@lambdaschool.com'
+    username: 'wendymitchell',
+    password: 'kitkat'
   },
   {
     id: 4,
-    name: 'Dustin',
-    age: 25,
-    email: 'D-munny@lambdaschool.com'
+    username: 'tommylowe',
+    password: 'bamboo'
   },
-  {
-    id: 5,
-    name: 'Sean',
-    age: 35,
-    email: 'sean@lambdaschool.com'
-  },
-  {
-    id: 6,
-    name: 'Michelle',
-    age: 67,
-    email: 'michelle@gmail.com'
-  }
 ];
 
 app.use(bodyParser.json());
 
 app.use(cors());
+
+app.get('/users', (req, res) => {
+  res.json(users);
+});
 
 function authenticator(req, res, next) {
   const { authorization } = req.headers;
@@ -74,17 +62,60 @@ app.post('/api/login', (req, res) => {
       .json({ error: 'Username or Password incorrect. Please see Readme' });
   }
 });
+let userId = users.length;
 
-// returns the list of friends
-app.get('/api/friends', authenticator, (req, res) => {
+// app.post('/api/register', (req, res) => {
+//   const { username, password } = req.body;
+//   const newUser = { username, password, id: userId }
+//   const duplicateUser = users.filter(user => {
+//     return user.username === newUser.username
+//   })
+//   // if (duplicateUser) {
+//   //   res
+//   //     .status(405)
+//   //     .json({ error: `Username ${newUser.username} is already taken.` });
+//   // } else {
+//     users.push(newUser);
+//     userId++
+//     res.json(users)
+//   // }
+// });
+
+app.post('/users', (req, res) => {
+  const { username } = req.body;
+  const newUser = { username, password, id: userId };
+  if (!username || !password) {
+    return sendUserError(
+      'Ya gone did smurfed! Username and password are required to create a user in the users DB.',
+      res
+    );
+  }
+  const findUserByUsername = user => {
+    return user.username === username;
+  };
+  if (users.find(findUserByUsername)) {
+    return sendUserError(
+      `Ya gone did smurfed! ${username} already exists in the users DB.`,
+      res
+    );
+  }
+
+  users.push(newUser);
+  userId++;
+  res.json(users);
+});
+
+
+// returns the list of users
+app.get('/api/users', authenticator, (req, res) => {
   setTimeout(() => {
-    res.send(friends);
+    res.send(users);
   }, 1000);
 });
 
 // returns the friend with the id passed as part of the URL
-app.get('/api/friends/:id', authenticator, (req, res) => {
-  const friend = friends.find(f => f.id == req.params.id);
+app.get('/api/users/:id', authenticator, (req, res) => {
+  const friend = users.find(f => f.id == req.params.id);
 
   if (friend) {
     res.status(200).json(friend);
@@ -93,42 +124,42 @@ app.get('/api/friends/:id', authenticator, (req, res) => {
   }
 });
 
-// creates a friend and return the new list of friends. Pass the friend as the body of the request (the second argument passed to axios.post)
-app.post('/api/friends', authenticator, (req, res) => {
+// creates a friend and return the new list of users. Pass the friend as the body of the request (the second argument passed to axios.post)
+app.post('/api/users', authenticator, (req, res) => {
   const friend = { id: getNextId(), ...req.body };
 
-  friends = [...friends, friend];
+  users = [...users, friend];
 
-  res.send(friends);
+  res.send(users);
 });
 
 // updates the friend using the id passed as part of the URL. Send the an object with the updated information as the body of the request (the second argument passed to axios.put)
-app.put('/api/friends/:id', authenticator, (req, res) => {
+app.put('/api/users/:id', authenticator, (req, res) => {
   const { id } = req.params;
 
-  const friendIndex = friends.findIndex(f => f.id == id);
+  const friendIndex = users.findIndex(f => f.id == id);
 
   if (friendIndex > -1) {
-    const friend = { ...friends[friendIndex], ...req.body };
+    const friend = { ...users[friendIndex], ...req.body };
 
-    friends = [
-      ...friends.slice(0, friendIndex),
+    users = [
+      ...users.slice(0, friendIndex),
       friend,
-      ...friends.slice(friendIndex + 1)
+      ...users.slice(friendIndex + 1)
     ];
-    res.send(friends);
+    res.send(users);
   } else {
     res.status(404).send({ msg: 'Friend not found' });
   }
 });
 
 // removes the friend using the id passed as part of the URL (123 in example)
-app.delete('/api/friends/:id', authenticator, (req, res) => {
+app.delete('/api/users/:id', authenticator, (req, res) => {
   const { id } = req.params;
 
-  friends = friends.filter(f => f.id !== Number(id));
+  users = users.filter(f => f.id !== Number(id));
 
-  res.send(friends);
+  res.send(users);
 });
 
 function getNextId() {

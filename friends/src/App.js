@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import ErrorPage from './components/ErrorPage';
 import PrivateRoute from './components/PrivateRoute';
 import FriendsListPage from './components/FriendsListPage';
+import RegisterPage from './components/register/RegisterPage'
 // import Friend from './components/Friend'
 
 function App() {
@@ -17,10 +18,13 @@ function App() {
         <br />
         <Link to="/api/login">Login</Link>
         <br />
+        <Link to="/api/register">Register</Link>
+        <br />
         <Link to="/api/friends">Friends</Link>
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path ='/api/login' component={LoginPage} />
+          <Route path='/api/register' component={RegisterPage} />
           <PrivateRoute exact path='/api/friends' component={FriendsListPage} />
           {/* <PrivateRoute path='/api/friends/:id' component={Friend} /> */}
           <Route component={ErrorPage} />

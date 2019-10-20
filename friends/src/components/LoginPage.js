@@ -29,7 +29,7 @@ class LoginPage extends React.Component {
       .then(response => {
         // console.log(response);
         localStorage.setItem('token', response.data.payload);
-        this.props.history.push('/api/friends')
+        this.props.history.push('/')
       })
       .catch(error => console.log(error))
   }

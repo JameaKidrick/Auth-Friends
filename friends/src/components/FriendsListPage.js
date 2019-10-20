@@ -5,7 +5,7 @@ import UpdateFriend from './UpdateFriend'
 
 const FriendsListPage = () => {
   const [friend, setFriend] = useState([])
-  const [addFriend, setAddFriend] = useState({name: '', age: 0, email: ''})
+  const [addFriend, setAddFriend] = useState({username: '', password: ''})
 
   const handleChange = e => {
     setAddFriend({...addFriend, [e.target.name]:e.target.value})
@@ -14,18 +14,18 @@ const FriendsListPage = () => {
   const handleSubmit = e => {
     e.preventDefault();
     axiosWithAuth()
-      .post('/api/friends', addFriend)
+      .post('/api/users', addFriend)
       .then(response => {
         console.log('ADD FRIENDS', response.data)
         setFriend(response.data)
       })
       .catch(error => console.log('POSTING ERROR', error))
-    setAddFriend({name: '', age: 0, email: ''})
+    setAddFriend({username: '', password: ''})
   }
 
   const fetchData = () => {
     axiosWithAuth()
-      .get('/api/friends')
+      .get('/api/users')
       .then(response => {
         console.log('GET FRIENDS', response.data)
         setFriend(response.data)
@@ -45,26 +45,26 @@ const FriendsListPage = () => {
         <h3 style={{color: 'lime'}}>Add a New Friend!</h3>
         <form onSubmit={handleSubmit}>
           <input 
-          name='name'
-          placeholder='name'
+          name='username'
+          placeholder='username'
           type='text'
           onChange={handleChange}
-          value={friend.name}
+          value={friend.username}
           />
           <input 
-          name='age'
-          placeholder='age'
+          name='password'
+          placeholder='password'
           type='text'
           onChange={handleChange}
-          value={friend.age}
+          value={friend.password}
           />
-          <input 
+          {/* <input 
           name='email'
           placeholder='email'
           type='text'
           onChange={handleChange}
           value={friend.email}
-          />
+          /> */}
           <button>Add Friend</button>
         </form>
       </div>
@@ -72,10 +72,10 @@ const FriendsListPage = () => {
         return(
           <div style={{border:'2px solid red'}} key={item.id}>
             <h2 style={{color:'red'}}>{item.id}</h2>
-            <h3 style={{color: 'mediumblue'}}>{`Update ${item.name}'s Information`}</h3>
+            <h3 style={{color: 'mediumblue'}}>{`Update ${item.username}'s Information`}</h3>
             <UpdateFriend item={item} fetchData={fetchData} />
-            <h3>{item.name}</h3>
-            <p>{item.age}</p>
+            <h3>{item.username}</h3>
+            <p>{item.password}</p>
             <p>{item.email}</p>
           </div>
         )
