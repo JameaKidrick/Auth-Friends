@@ -48,63 +48,41 @@ function authenticator(req, res, next) {
   }
 }
 
-// returns a token to be added to the header of all other requests. Pass in the credentials as the body of the request
-app.post('/api/login', (req, res) => {
+// creates a friend and return the new list of users. Pass the friend as the body of the request (the second argument passed to axios.post)
+app.post('/api/users', (req, res) => {
   const { username, password } = req.body;
-  if (username === 'mea' && password === 'mea') {
-    req.loggedIn = true;
-    res.status(200).json({
-      payload: token
-    });
-  } else {
-    res
-      .status(403)
-      .json({ error: 'Username or Password incorrect. Please see Readme' });
-  }
-});
-let userId = users.length;
-
-// app.post('/api/register', (req, res) => {
-//   const { username, password } = req.body;
-//   const newUser = { username, password, id: userId }
-//   const duplicateUser = users.filter(user => {
-//     return user.username === newUser.username
-//   })
-//   // if (duplicateUser) {
-//   //   res
-//   //     .status(405)
-//   //     .json({ error: `Username ${newUser.username} is already taken.` });
-//   // } else {
-//     users.push(newUser);
-//     userId++
-//     res.json(users)
-//   // }
-// });
-
-app.post('/users', (req, res) => {
-  const { username } = req.body;
-  const newUser = { username, password, id: userId };
-  if (!username || !password) {
-    return sendUserError(
-      'Ya gone did smurfed! Username and password are required to create a user in the users DB.',
-      res
-    );
-  }
+  const newUser = { id: getNextId(), ...req.body };
   const findUserByUsername = user => {
     return user.username === username;
   };
-  if (users.find(findUserByUsername)) {
-    return sendUserError(
-      `Ya gone did smurfed! ${username} already exists in the users DB.`,
-      res
-    );
-  }
-
-  users.push(newUser);
-  userId++;
-  res.json(users);
+    if (users.find(findUserByUsername)){
+      return ( // return sendUserError ( // MAY NEED TO BE USE TO CONNECT YUP VALIDATION TO ERROR
+        `User ${username} has already been created.`,
+        res
+      );
+    }
+    users = [...users, newUser];
+    res.send(users);
 });
 
+
+// returns a token to be added to the header of all other requests. Pass in the credentials as the body of the request
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  const findUser = users.find(user => {
+    return user.username === username && user.password === password
+  })
+    if (findUser) {
+      req.loggedIn = true;
+      res.status(200).json({
+        payload: token
+      });
+    } else {
+      res
+        .status(403)
+        .json({ error: 'Username or Password incorrect. Please see Readme' });
+    }
+});
 
 // returns the list of users
 app.get('/api/users', authenticator, (req, res) => {
@@ -124,14 +102,6 @@ app.get('/api/users/:id', authenticator, (req, res) => {
   }
 });
 
-// creates a friend and return the new list of users. Pass the friend as the body of the request (the second argument passed to axios.post)
-app.post('/api/users', authenticator, (req, res) => {
-  const friend = { id: getNextId(), ...req.body };
-
-  users = [...users, friend];
-
-  res.send(users);
-});
 
 // updates the friend using the id passed as part of the URL. Send the an object with the updated information as the body of the request (the second argument passed to axios.put)
 app.put('/api/users/:id', authenticator, (req, res) => {

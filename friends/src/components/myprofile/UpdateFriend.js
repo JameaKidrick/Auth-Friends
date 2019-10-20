@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 const UpdateFriends = props => {
   const [updateFriend, setUpdateFriend] = useState({name: '', age: 0, email: ''})

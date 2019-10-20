@@ -1,5 +1,5 @@
 import React from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 // REFACTOR TO FORMIK AND YUP
 // STYLE WITH MATERIAL UI
@@ -24,7 +24,10 @@ class LoginPage extends React.Component {
 
   login = e => {
     e.preventDefault();
-    axiosWithAuth()
+    if(localStorage.getItem('token')){
+      window.alert('You are already logged in. Please log out before relogging.')
+    }else{
+      axiosWithAuth()
       .post('/api/login', this.state.credentials)
       .then(response => {
         // console.log(response);
@@ -32,6 +35,7 @@ class LoginPage extends React.Component {
         this.props.history.push('/')
       })
       .catch(error => console.log(error))
+    }
   }
 
   render() {
