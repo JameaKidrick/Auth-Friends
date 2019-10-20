@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { axiosWithAuth } from '../../utils/axiosWithAuth'
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import { connect } from 'react-redux';
+import { registerUser } from '../../actions'
 
 import RegisterForm from './RegisterForm'
 
-const RegisterPage = props => {
+const RegisterPage = ({history, match, registerUser, isFetching, error}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
   const handleChange = e => {
@@ -12,25 +14,39 @@ const RegisterPage = props => {
 
   const registerSubmit = e => {
     e.preventDefault();
-    axiosWithAuth()
-      .post('/api/users', credentials)
-      .then(response => {
-        console.log('ADD NEW USER', response.data);
-        setCredentials({username: '', password: ''})
-        props.history.push('/')
-      })
-      .catch(error => console.log(error))
+    registerUser(credentials, history);
+    setCredentials({username: '', password: ''})
+    
   }
 
 
+
+  if(isFetching){
+    return <h2>Registering User...</h2>
+  }
+
   return(
-    <RegisterForm 
-      handleChange={handleChange} 
-      registerSubmit={registerSubmit} 
-      credentials={credentials} 
-    />
+    <div>
+      {error && <p>{error}</p>}
+      <RegisterForm 
+        handleChange={handleChange} 
+        registerSubmit={registerSubmit} 
+        credentials={credentials} 
+      />
+    </div>
   )
   
 }
 
-export default RegisterPage;
+const mapStateToProps = state => {
+  return {
+    users: state.users,
+    isFetching: state.isFetching,
+    error: state.error
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(RegisterPage);
