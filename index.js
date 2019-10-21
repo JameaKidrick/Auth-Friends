@@ -6,7 +6,13 @@ const app = express();
 const token =
   'esfeyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NUIhkufemQifQ';
 
-let nextId = 7;
+const sendUserError = (msg, res) => {
+  res.status(422);
+  res.json({ Error: msg });
+  return;
+};
+
+let nextId = 5;
 
 let users = [
   {
@@ -31,24 +37,35 @@ let users = [
   },
 ];
 
+let activeUser = [
+  
+]
+
 app.use(bodyParser.json());
 
 app.use(cors());
 
+// GETS LIST OF USERS
 app.get('/users', (req, res) => {
   res.json(users);
 });
 
+// GETS THE ACTIVE USER
+app.get('/activeUser', (req, res) => {
+  res.json(activeUser);
+});
+
+// AUTHENTICATION USING TOKEN
 function authenticator(req, res, next) {
   const { authorization } = req.headers;
   if (authorization === token) {
     next();
   } else {
-    res.status(403).json({ error: 'User be logged in to do that.' });
+    res.status(403).json({ error: 'User must be logged in to do that.' });
   }
 }
 
-// creates a friend and return the new list of users. Pass the friend as the body of the request (the second argument passed to axios.post)
+// REGISTERS NEW USER AND ADDS THEM TO THE ACTIVE USER DATA
 app.post('/api/users', (req, res) => {
   const { username, password } = req.body;
   const newUser = { id: getNextId(), ...req.body };
@@ -56,33 +73,58 @@ app.post('/api/users', (req, res) => {
     return user.username === username;
   };
     if (users.find(findUserByUsername)){
-      return ( // return sendUserError ( // MAY NEED TO BE USE TO CONNECT YUP VALIDATION TO ERROR
-        `User ${username} has already been created.`,
+      return sendUserError (
+        `There is already an account under that username.`,
         res
       );
+    }else{
+      users = [...users, newUser];
+      activeUser = [...activeUser, newUser];
+      res
+      .status(200).json({
+        payload: token
+      });
+      // .send(users);
     }
-    users = [...users, newUser];
-    res.send(users);
 });
 
-
-// returns a token to be added to the header of all other requests. Pass in the credentials as the body of the request
+// LOGS IN USER AND ADDS THEM TO THE ACTIVE USER DATA
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   const findUser = users.find(user => {
     return user.username === username && user.password === password
   })
+    let user = findUser;
     if (findUser) {
       req.loggedIn = true;
       res.status(200).json({
-        payload: token
+        payload: token,
+        id: user.id,
+        username: user.username,
+        password: user.password
       });
+      activeUser = [...activeUser, user];
+      // res.send(activeUser);
     } else {
       res
         .status(403)
-        .json({ error: 'Username or Password incorrect. Please see Readme' });
+        .json({ error: 'Username or Password incorrect. Please try again.' });
     }
 });
+
+
+
+// WILL DELETE USER WITHIN THE ACTIVE USER DATA (NEEDS AUTH. WHICH SHOULD BE FINE SINCE THE USER IS ALREADY LOGGED IN AND THIS CALL WILL HAPPEN USER IS TRYING TO LOG OUT)
+app.delete('/api/activeUser', authenticator, (req, res) => {
+  // const { id } = req.params;
+
+  activeUser = activeUser.filter(f => f[0] !== f[0]);
+
+  res.send(activeUser);
+});
+
+
+/*********** HAVE NOT BEEN ALTERED ***********/
 
 // returns the list of users
 app.get('/api/users', authenticator, (req, res) => {
@@ -102,6 +144,11 @@ app.get('/api/users/:id', authenticator, (req, res) => {
   }
 });
 
+// app.get('/api/activeUser', authenticator, (req, res) => {
+//   setTimeout(() => {
+//     res.send(activeUser);
+//   }, 2000);
+// });
 
 // updates the friend using the id passed as part of the URL. Send the an object with the updated information as the body of the request (the second argument passed to axios.put)
 app.put('/api/users/:id', authenticator, (req, res) => {
@@ -139,3 +186,4 @@ function getNextId() {
 app.listen(port, () => {
   console.log(`server listening on port ${port}`);
 });
+

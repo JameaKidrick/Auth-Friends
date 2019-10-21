@@ -1,10 +1,11 @@
-import { START_FETCHING, FETCH_FAILURE, FETCH_SUCCESS, REGISTRATION_SUCCESS, LOGIN_SUCCESS } from '../actions';
+import { START_FETCHING, FETCH_FAILURE, FETCH_USERS_SUCCESS, FETCH_ACTIVE_USER_SUCCESS, REGISTRATION_SUCCESS, LOGIN_SUCCESS, LOGOUT_SUCCESS } from '../actions';
 
 export const initialState = {
   users: [ ],
   activeUser: [ ],
   isFetching: false,
-  error: ''
+  error: '',
+  // currentUser: [ ]
 }
 
 export const reducer = (state = initialState, action) => {
@@ -15,7 +16,7 @@ export const reducer = (state = initialState, action) => {
         isFetching: true,
         error: ''
       };
-    case FETCH_SUCCESS:
+    case FETCH_USERS_SUCCESS:
     case REGISTRATION_SUCCESS:
       return{
         ...state,
@@ -23,12 +24,24 @@ export const reducer = (state = initialState, action) => {
         error: '',
         users: action.payload
       };
-    case LOGIN_SUCCESS:
+    case FETCH_ACTIVE_USER_SUCCESS:
       return{
-        ...state.userLoggedIn,
+        ...state,
         isFetching: false,
         error: '',
-        // activeUser: action.payload
+        activeUser: action.payload,
+      }
+    case LOGIN_SUCCESS:
+        return{
+          ...state,
+          isFetching: false,
+          error: '',
+        };
+    case LOGOUT_SUCCESS:
+      return{
+        ...state,
+        isFetching: false,
+        error: '',
       };
     case FETCH_FAILURE:
       return{

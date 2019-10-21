@@ -4,7 +4,7 @@ import { loginUser } from '../../actions'
 
 import LoginForm from './LoginForm';
 
-const LoginPage = ({history, loginUser, isFetching, error}) => {
+const LoginPage = ({history, loginUser, isFetching, error, logIn, register}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
   const handleChange = e => {
@@ -18,6 +18,8 @@ const LoginPage = ({history, loginUser, isFetching, error}) => {
     }else{
       loginUser(credentials, history);
       setCredentials({username: '', password: ''})
+      logIn()
+      register()
     }
   }
 
