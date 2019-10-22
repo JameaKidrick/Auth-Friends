@@ -187,3 +187,39 @@ app.listen(port, () => {
   console.log(`server listening on port ${port}`);
 });
 
+// SHAPE OF DATA:
+// let users = [
+//   {
+//     id: 1,
+//     username: 'kimfox',
+//     password: 'love1',
+      // profile: [
+        // avatar
+        // aboutme:           
+        // favorite_languages:
+        // favorite_activities:
+        // questionnaire:
+        // friends:     
+        // friends:
+      // ]
+//   },
+//   {
+//     id: 2,
+//     username: 'frederickperez',
+//     password: 'lillian'
+//   },
+//   {
+//     id: 3,
+//     username: 'wendymitchell',
+//     password: 'kitkat'
+//   },
+//   {
+//     id: 4,
+//     username: 'tommylowe',
+//     password: 'bamboo'
+//   },
+// ];
+
+// let activeUser = [
+  
+// ]

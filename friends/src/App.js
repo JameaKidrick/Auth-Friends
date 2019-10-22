@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute';
 import FriendsListPage from './components/friends/FriendsListPage';
 import RegisterPage from './components/register/RegisterPage'
 import MyProfilePage from './components/myprofile/MyProfilePage';
+import CreateProfilePage from './components/myprofile/CreateProfilePage';
 
 
 function App(props) {
@@ -43,16 +44,23 @@ function App(props) {
         {!loggedIn ? <Link to="/api/login">Login</Link> : localStorage.getItem('token') ? <Link to='/' onClick={() => logOut()}>Log out</Link> : false}
         <br />
         {!registered ? <Link to="/api/register">Register</Link> : false}
+        <br />
+        <Link to='/api/register/createprofile'>Create Profile</Link>
+
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path ='/api/login' render={props => {
             return <LoginPage {...props} logIn={logIn} register={register} />
           }} />
-          <Route path='/api/register' render={props => {
+          <Route exact path='/api/register' render={props => {
             return <RegisterPage {...props} register={register} logIn={logIn} />
           }} />
+          {/* TEMPORARILY PUBLIC */}
+          <Route path='/api/register/createprofile' component={CreateProfilePage} />
+          {/* TEMPORARILY PUBLIC */}
 
           {/********************** PRIVATE ROUTES **********************/}
+          {/* <PrivateRoute path='/api/register/createprofile' component={CreateProfilePage} /> */}
           <PrivateRoute exact path='/api/friends' component={FriendsListPage} />
           <PrivateRoute exact path='/myprofile' component={MyProfilePage} />
           <Route component={ErrorPage} />

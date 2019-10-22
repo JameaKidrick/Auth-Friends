@@ -41,3 +41,83 @@
 // MY PROFILE
   // IF LINK IS CLICKED, ACTIVE USER ID IS CHECKED AND THE ID IS INSERTED INTO URL???
     // THIS DEPENDS ON HOW THE USERPROFILE ROUTE WORKS, THERE MAY BE A WAY TO REMOVE THE ID FROM THE URL
+
+// CREATE MY PROFILE
+  // USER WILL BE ABLE TO CHOOSE BETWEEN ~20 AVATARS (REQUIRED) ***DONE***
+  // DOB WILL BE CHOSEN USING A CALENDER AND/OR DATE INPUT (OPTIONAL)
+    // USER WILL NOT BE ABLE TO REDO BIRTHDAY
+    // STRETCH: USER WILL BE ABLE TO CHOOSE BETWEEN FULL DATE (MM/DD/YYYY), PARTIAL DATE (MM/YYYY OR MM), OR NONE
+  // LOCATION - TEXT INPUT (OPTIONAL)
+  // ABOUT YOU - TEXT INPUT (OPTIONAL)
+  // 20 QUESTIONS/RADIO BUTTONS (5 REQUIRED)
+    // 1. What is the most impressive thing you know how to do?
+    // 2. What game or movie universe would you most like to live in?
+    // 3. What is something you think everyone should do at least once in their lives?
+    // 4. What’s the title of the current chapter of your life?
+    // 5. What makes a good life?
+    // 6. What would be your first question after waking up from being cryogenically frozen for 100 years?
+    // 7. What hobby would you get into if time and money weren’t an issue?
+    // 8. What could you give a 40-minute presentation on with absolutely no preparation?
+    // 9. Why did you decide to do the work you are doing now?
+    // 10. What was the best book or series that you’ve ever read?
+    // 11. What are you looking forward to in the coming months?
+    // 12. What are some small things that make your day better?
+    // 13. Where would you spend all your time if you could?
+    // 14. What pets did you have while you were growing up?
+    // 15. What would be the most amazing adventure to go on?
+    // 16. What’s something you like to do the old-fashioned way?
+    // 17. Who has impressed you most with what they’ve accomplished?
+    // 18. What fad or trend do you hope comes back?
+    // 19. What’s the best single day on the calendar?
+    // 20. What website do you visit most often?
+
+  // CHECKBOXES (1 REQUIRED)
+    // FAVORITE LANGUAGES:
+      // Agda
+      // BF
+      // C
+      // Clojure
+      // CoffeeScript
+      // Coq
+      // C++
+      // Crystal
+      // C#
+      // Dart
+      // Elixir
+      // Elm
+      // Erlang
+      // Factor
+      // Forth
+      // Fortran
+      // F#
+      // Go
+      // Groovy
+      // Haskell
+      // Idris
+      // Java
+      // JavaScript
+      // Julia
+      // Kotlin
+      // Lua
+      // NASM
+      // Nim
+      // Objective-C
+      // OCaml
+      // PHP
+      // PowerShell
+      // PurScript
+      // Python
+      // R
+      // Racket
+      // Reason
+      // Ruby
+      // Rust
+      // Scala
+      // Shell
+      // Solidarity
+      // SQL
+      // Swift
+      // TypeScript
+      // VB
+
+
