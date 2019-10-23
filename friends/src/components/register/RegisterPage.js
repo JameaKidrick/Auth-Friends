@@ -4,7 +4,7 @@ import { registerUser } from '../../actions'
 
 import RegisterForm from './RegisterForm'
 
-const RegisterPage = ({history, registerUser, isFetching, error, register, logIn}) => {
+const RegisterPage = ({history, registerUser, isFetching, error}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
   const handleChange = e => {
@@ -13,14 +13,8 @@ const RegisterPage = ({history, registerUser, isFetching, error, register, logIn
 
   const registerSubmit = e => {
     e.preventDefault();
-    if(localStorage.getItem('token')){
-      window.alert('You are logged in. Please log out before registering a new account.')
-    }else{
-      registerUser(credentials, history);
-      setCredentials({username: '', password: ''})
-      register()
-      logIn()
-    }
+    registerUser(credentials, history);
+    setCredentials({username: '', password: ''})
   }
 
   if(isFetching){

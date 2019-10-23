@@ -15,21 +15,9 @@ import CreateProfilePage from './components/myprofile/CreateProfilePage';
 
 
 function App(props) {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [registered, setRegistered] = useState(false)
 
   const logOut = () => {
     props.logoutUser()
-    setLoggedIn(!loggedIn)
-    setRegistered(!registered)
-  }
-
-  const logIn = () => {
-    setLoggedIn(!loggedIn)
-  }
-
-  const register = () => {
-    setRegistered(!registered)
   }
 
   return (
@@ -41,19 +29,21 @@ function App(props) {
         <br />
         <Link to='/myprofile/'>My Profile</Link>
         <br />
-        {!loggedIn ? <Link to="/api/login">Login</Link> : localStorage.getItem('token') ? <Link to='/' onClick={() => logOut()}>Log out</Link> : false}
+        {!props.loggedIn ? <Link to="/api/login">Login</Link> : props.loggedIn ? <Link to='/' onClick={() => logOut()}>Log out</Link> : false}
         <br />
-        {!registered ? <Link to="/api/register">Register</Link> : false}
+        {!props.loggedIn ? <Link to="/api/register">Register</Link> : console.log(props.loggedIn)}
         <br />
         <Link to='/api/register/createprofile'>Create Profile</Link>
+
+        {console.log(props.loggedIn)}
 
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path ='/api/login' render={props => {
-            return <LoginPage {...props} logIn={logIn} register={register} />
+            return <LoginPage {...props} />
           }} />
           <Route exact path='/api/register' render={props => {
-            return <RegisterPage {...props} register={register} logIn={logIn} />
+            return <RegisterPage {...props}  />
           }} />
           {/* TEMPORARILY PUBLIC */}
           <Route path='/api/register/createprofile' component={CreateProfilePage} />
@@ -72,11 +62,11 @@ function App(props) {
 
 const mapStatToProps = state => {
   return{
-    activeUser: state.activeUser
+    loggedIn: state.loggedIn
   }
 }
 
 export default connect(
   mapStatToProps,
-  { logoutUser, getActiveUserData }
+  { logoutUser }
 )(App);

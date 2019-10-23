@@ -60,7 +60,7 @@ export const loginUser = (credentials, history) => dispatch => {
       localStorage.setItem('token', response.data.payload);
       localStorage.setItem('Active User', credentials.username)
       history.push(`/myprofile`) // if I want id in url for later: `/myprofile/${response.data.id}`
-
+      
     })
     .catch(error => {
       if(403){

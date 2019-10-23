@@ -5,7 +5,8 @@ export const initialState = {
   activeUser: [ ],
   isFetching: false,
   error: '',
-  // currentUser: [ ]
+  // currentUser: [ ],
+  loggedIn: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -14,7 +15,7 @@ export const reducer = (state = initialState, action) => {
       return{
         ...state,
         isFetching: true,
-        error: ''
+        error: '',
       };
     case FETCH_USERS_SUCCESS:
     case REGISTRATION_SUCCESS:
@@ -22,7 +23,8 @@ export const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         error: '',
-        users: action.payload
+        users: action.payload,
+        loggedIn: true
       };
     case FETCH_ACTIVE_USER_SUCCESS:
       return{
@@ -30,24 +32,28 @@ export const reducer = (state = initialState, action) => {
         isFetching: false,
         error: '',
         activeUser: action.payload,
+        loggedIn: true
       }
     case LOGIN_SUCCESS:
         return{
           ...state,
           isFetching: false,
           error: '',
+          loggedIn: true
         };
     case LOGOUT_SUCCESS:
       return{
         ...state,
         isFetching: false,
         error: '',
+        loggedIn: false
       };
     case FETCH_FAILURE:
       return{
         ...state,
         isFetching: false,
-        error: action.payload
+        error: action.payload,
+        ...state.loggedIn
       }
     default:
       return state

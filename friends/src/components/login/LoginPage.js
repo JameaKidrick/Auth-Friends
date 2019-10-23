@@ -4,7 +4,7 @@ import { loginUser } from '../../actions'
 
 import LoginForm from './LoginForm';
 
-const LoginPage = ({history, loginUser, isFetching, error, logIn, register}) => {
+const LoginPage = ({history, loginUser, isFetching, error}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
   const handleChange = e => {
@@ -13,14 +13,8 @@ const LoginPage = ({history, loginUser, isFetching, error, logIn, register}) => 
 
   const loginSubmit = e => {
     e.preventDefault();
-    if(localStorage.getItem('token')){
-      window.alert('You are already logged in. Please log out before relogging.')
-    }else{
-      loginUser(credentials, history);
-      setCredentials({username: '', password: ''})
-      logIn()
-      register()
-    }
+    loginUser(credentials, history);
+    setCredentials({username: '', password: ''})
   }
 
   if(isFetching){
