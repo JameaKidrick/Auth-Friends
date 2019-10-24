@@ -5,7 +5,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Calendar from 'react-calendar';
 
 // COMPONENTS
-import Questionnaire from './createmyprofile/Questionnaire'
+import Questionnaire from './createmyprofile/Questionnaire/QuestionnaireForm'
+import FaveLanguage from './createmyprofile/FaveLanguage/FaveLanguagePage';
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,36 +19,6 @@ const useStyles = makeStyles(theme => ({
     height: 100,
     cursor: 'pointer',
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  dense: {
-    marginTop: theme.spacing(2),
-  },
-  root: {
-    width: '100%',
-    maxWidth: '65%',
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid blue',
-    // paddingLeft:'3%',
-    display: 'flex',
-    
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-  listItems: {
-    border: '2px solid orange',
-    display:'flex',
-    flexDirection:'column',
-    justifyContent: 'flex-start'
-  },
-  questions: {
-    border:'2px solid black',
-    display:'flex',
-
-  }
 }));
 
 const CreateProfileForm = () => {
@@ -108,13 +79,13 @@ const CreateProfileForm = () => {
     <div>   
       Hello CreateProfileForm!
       
-      <form style={{border:'2px solid red', width:'50%', margin:'0 auto'}}>
+      <form style={{width:'50%', margin:'0 auto'}}>
         <div>
           <h2>
             Selected Avatar:
             <Avatar src={avatar} className={classes.bigAvatar}></Avatar>
           </h2>
-          <div style={{border:'2px solid red', width:'50%', display:'flex', flexWrap:'wrap'}}>
+          <div style={{width:'50%', display:'flex', flexWrap:'wrap'}}>
             {avatarList.map((item, index) => {
               return <Avatar key={index} src={item} alt='avatar image' className={classes.bigAvatar} onClick={()=>{choice(index)}} />
             })}
@@ -134,21 +105,27 @@ const CreateProfileForm = () => {
           <br />
           <input 
           type='radio'
-          name='DOBMonth'
+          name='DOB'
           value={formatMonth(DOB)}
-          />{formatMonth(DOB)} 
+          />mm
           <br />
           <input 
           type='radio'
-          name='DOBShort'
+          name='DOB'
           value={formatShortDate(DOB)}
-          />{formatShortDate(DOB)} 
+          />mm yyyy
           <br />
           <input 
           type='radio'
-          name='DOBFull'
+          name='DOB'
           value={formatFullDate(DOB)}
-          />{formatFullDate(DOB)}
+          />mm dd yyyy
+          <br />
+          <input 
+          type='radio'
+          name='DOB'
+          // value=''
+          />don't display my birthdate
         </div>
         <div>
           location:
@@ -166,7 +143,6 @@ const CreateProfileForm = () => {
           // value={user.location}
           />
         </div>
-        <Questionnaire />
       </form>
     </div>
   )
