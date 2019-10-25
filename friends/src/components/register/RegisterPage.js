@@ -1,88 +1,41 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { connect, useSelector } from 'react-redux';
+import { PongSpinner } from 'react-spinners-kit'
+
+// ACTIONS
 import { registerUser } from '../../actions'
 
+// COMPONENTS
 import RegisterForm from './RegisterForm'
 
-const RegisterPage = ({history, registerUser, isFetching, error}) => {
-  const [credentials, setCredentials] = useState({username: '', password: ''})
-
-  const registerSubmit = e => {
-    e.preventDefault();
-    registerUser(credentials, history);
-    setCredentials(credentials)
-    // console.log(credentials)
-  }
+const RegisterPage = ({history, registerUser}) => {
+  const isFetching = useSelector(state => state.isFetching)
+  const error = useSelector(state => state.error)
 
   if(isFetching){
-    return <h2>Registering User...</h2>
+    return(
+      <div>
+        <h2>Registering User...</h2>
+        <PongSpinner
+          size={80}
+        />
+      </div>
+    )
   }
 
   return(
     <div>
       {error && <p>{error}</p>}
       <RegisterForm 
-        registerSubmit={registerSubmit} 
-        credentials={credentials}
-        setCredentials={setCredentials} 
+        registerUser={registerUser}
+        history={history}
       />
     </div>
   )
   
 }
 
-const mapStateToProps = state => {
-  return {
-    isFetching: state.isFetching,
-    error: state.error
-  }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   { registerUser }
 )(RegisterPage);
-
-// const RegisterPage = ({history, registerUser, isFetching, error}) => {
-//   const [credentials, setCredentials] = useState({username: '', password: ''})
-
-//   const handleChange = e => {
-//     setCredentials({...credentials, [e.target.name]: e.target.value})
-//     console.log(e.target.name)
-//   };
-
-//   const registerSubmit = e => {
-//     e.preventDefault();
-//     registerUser(credentials, history);
-//     setCredentials({username: '', password: ''})
-//     console.log('REGISTERSUBMIT', credentials)
-//   }
-
-//   if(isFetching){
-//     return <h2>Registering User...</h2>
-//   }
-
-//   return(
-//     <div >
-//       {error && <p>{error}</p>}
-//       <RegisterForm 
-//         handleChange={handleChange} 
-//         registerSubmit={registerSubmit} 
-//         setCredentials={setCredentials} 
-//       />
-//     </div>
-//   )
-  
-// }
-
-// const mapStateToProps = state => {
-//   return {
-//     isFetching: state.isFetching,
-//     error: state.error
-//   }
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   { registerUser }
-// )(RegisterPage);
