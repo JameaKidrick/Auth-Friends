@@ -15,7 +15,7 @@ export const reducer = (state = initialState, action) => {
       return{
         ...state,
         isFetching: true,
-        error: '',
+        error: ''
       };
     case FETCH_USERS_SUCCESS:
     case REGISTRATION_SUCCESS:

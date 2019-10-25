@@ -7,14 +7,11 @@ import RegisterForm from './RegisterForm'
 const RegisterPage = ({history, registerUser, isFetching, error}) => {
   const [credentials, setCredentials] = useState({username: '', password: ''})
 
-  const handleChange = e => {
-    setCredentials({...credentials, [e.target.name]: e.target.value})
-  };
-
   const registerSubmit = e => {
     e.preventDefault();
     registerUser(credentials, history);
-    setCredentials({username: '', password: ''})
+    setCredentials(credentials)
+    // console.log(credentials)
   }
 
   if(isFetching){
@@ -25,9 +22,9 @@ const RegisterPage = ({history, registerUser, isFetching, error}) => {
     <div>
       {error && <p>{error}</p>}
       <RegisterForm 
-        handleChange={handleChange} 
         registerSubmit={registerSubmit} 
-        credentials={credentials} 
+        credentials={credentials}
+        setCredentials={setCredentials} 
       />
     </div>
   )
@@ -45,3 +42,47 @@ export default connect(
   mapStateToProps,
   { registerUser }
 )(RegisterPage);
+
+// const RegisterPage = ({history, registerUser, isFetching, error}) => {
+//   const [credentials, setCredentials] = useState({username: '', password: ''})
+
+//   const handleChange = e => {
+//     setCredentials({...credentials, [e.target.name]: e.target.value})
+//     console.log(e.target.name)
+//   };
+
+//   const registerSubmit = e => {
+//     e.preventDefault();
+//     registerUser(credentials, history);
+//     setCredentials({username: '', password: ''})
+//     console.log('REGISTERSUBMIT', credentials)
+//   }
+
+//   if(isFetching){
+//     return <h2>Registering User...</h2>
+//   }
+
+//   return(
+//     <div >
+//       {error && <p>{error}</p>}
+//       <RegisterForm 
+//         handleChange={handleChange} 
+//         registerSubmit={registerSubmit} 
+//         setCredentials={setCredentials} 
+//       />
+//     </div>
+//   )
+  
+// }
+
+// const mapStateToProps = state => {
+//   return {
+//     isFetching: state.isFetching,
+//     error: state.error
+//   }
+// }
+
+// export default connect(
+//   mapStateToProps,
+//   { registerUser }
+// )(RegisterPage);
