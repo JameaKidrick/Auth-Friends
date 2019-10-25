@@ -1,4 +1,6 @@
 import React from 'react';
+
+// FORMIK AND YUP VALIDATION
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from 'formik-material-ui';
@@ -78,7 +80,6 @@ const FormikRegisterForm = withFormik({
 			.min(6, 'password must be at least 6 characters long')
       .required('password is required'),
     confirmPassword: Yup.string()
-      // .matches(/good/, 'passwords do not match')
       .required('confirm password')
   }),
 

@@ -1,46 +1,40 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { connect, useSelector } from 'react-redux';
+import { PongSpinner } from 'react-spinners-kit'
+
+// ACTIONS
 import { loginUser } from '../../actions'
 
+// COMPONENTS
 import LoginForm from './LoginForm';
 
-const LoginPage = ({history, loginUser, isFetching, error}) => {
-  const [credentials, setCredentials] = useState({username: '', password: ''})
-
-  const handleChange = e => {
-    setCredentials({...credentials, [e.target.name]: e.target.value})
-  };
-
-  const loginSubmit = e => {
-    e.preventDefault();
-    loginUser(credentials, history);
-    setCredentials({username: '', password: ''})
-  }
+const LoginPage = ({history, loginUser}) => {
+  const isFetching = useSelector(state => state.isFetching)
+  const error = useSelector(state => state.error)
 
   if(isFetching){
-    return <h2>Logging in User...</h2>
+    return(
+      <div>
+        <h2>Logging in User...</h2>
+        <PongSpinner
+          size={80}
+        />
+      </div>
+    )
   }
 
   return (
     <div>
       {error && <p>{error}</p>}
       <LoginForm 
-        handleChange={handleChange} 
-        loginSubmit={loginSubmit}
-        credentials={credentials}
+        loginUser={loginUser}
+        history={history}
       />
     </div>
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    isFetching: state.isFetching,
-    error: state.error
-  }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   { loginUser }
 )(LoginPage);
