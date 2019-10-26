@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { avatarList } from './AvatarList';
+import { avatarList } from '../AvatarList';
+
+// FORM
+import { withFormik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { TextField } from 'formik-material-ui';
+import Button from '@material-ui/core/Button';
+
+// COMPONENTS
+import Questionnaire from './Questionnaire/QuestionnaireForm'
+import FaveLanguage from './FaveLanguage/FaveLanguagePage';
+
+// STYLING
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Calendar from 'react-calendar';
-
-// COMPONENTS
-import Questionnaire from './createmyprofile/Questionnaire/QuestionnaireForm'
-import FaveLanguage from './createmyprofile/FaveLanguage/FaveLanguagePage';
-
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -26,17 +33,19 @@ const CreateProfileForm = () => {
   const [avatar, setAvatar] = useState()
   const [DOB, setDOB] = useState(new Date())
 
+  // RETRIEVING SELECTED AVATAR
   const choice = id => {
     console.log(avatarList[id])
     setAvatar(`${avatarList[id]}`)
   }
 
+  // CHOSEN DOB
   function formatFullDate(date) {
     const monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      "january", "february", "march",
+      "april", "may", "june", "july",
+      "august", "september", "october",
+      "november", "december"
     ];
   
     const day = date.getDate();
@@ -47,10 +56,10 @@ const CreateProfileForm = () => {
 
   function formatShortDate(date) {
     const monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      "january", "february", "march",
+      "april", "may", "june", "july",
+      "august", "september", "october",
+      "november", "december"
     ];
 
     const monthIndex = date.getMonth();
@@ -60,29 +69,24 @@ const CreateProfileForm = () => {
 
   function formatMonth(date) {
     const monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      "january", "february", "march",
+      "april", "may", "june", "july",
+      "august", "september", "october",
+      "november", "december"
     ];
 
     const monthIndex = date.getMonth();
     return `${monthNames[monthIndex]}`
   }
-  
-
-  // const handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
 
   return(
     <div>   
       Hello CreateProfileForm!
       
-      <form style={{width:'50%', margin:'0 auto'}}>
+      <Form style={{width:'50%', margin:'0 auto'}}>
         <div>
           <h2>
-            Selected Avatar:
+            avatar selected:
             <Avatar src={avatar} className={classes.bigAvatar}></Avatar>
           </h2>
           <div style={{width:'50%', display:'flex', flexWrap:'wrap'}}>
@@ -143,7 +147,7 @@ const CreateProfileForm = () => {
           // value={user.location}
           />
         </div>
-      </form>
+      </Form>
     </div>
   )
 }

@@ -11,7 +11,7 @@ import PrivateRoute from './components/PrivateRoute';
 import FriendsListPage from './components/friends/FriendsListPage';
 import RegisterPage from './components/register/RegisterPage'
 import MyProfilePage from './components/myprofile/MyProfilePage';
-import CreateProfilePage from './components/myprofile/CreateProfilePage';
+import CreateProfilePage from './components/myprofile/createmyprofile/CreateProfilePage';
 import FaveLanguagePage from './components/myprofile/createmyprofile/FaveLanguage/FaveLanguagePage';
 import QuestionnairePage from './components/myprofile/createmyprofile/Questionnaire/QuestionnairePage';
 
@@ -33,7 +33,7 @@ function App(props) {
         <br />
         {!props.loggedIn ? <Link to="/api/login">Login</Link> : props.loggedIn ? <Link to='/' onClick={() => logOut()}>Log out</Link> : false}
         <br />
-        {!props.loggedIn ? <Link to="/api/register">Register</Link> : console.log(props.loggedIn)}
+        {!props.loggedIn ? <Link to="/api/register">Register</Link> : console.log(props.loggedIn ? 'logged in' : 'logged out')}
         <br />
         <Link to='/api/register/createprofile'>Create Profile</Link>
         <br />
