@@ -25,9 +25,10 @@ const MyProfilePage = props => {
       {props.activeUser.map(item => {
         return(
           <div key={item.id}>
-            <Avatar src={item.profile[0].avatar} className={classes.bigAvatar}></Avatar>
+            {console.log(item)}
+            <Avatar src={item.profile[4].avatar} className={classes.bigAvatar}></Avatar>
             <h1>{`${item.username} (ID Number: ${item.id})`}</h1>
-            <h2>{item.profile[0].location.toLowerCase()}</h2>
+            {/* <h2>{item.profile[0].location.toLowerCase()}</h2>
             <h2>birthdate: {item.profile[0].dob}</h2>
             <h2>about me: </h2>
             <h5>{item.profile[0].aboutme}</h5>
@@ -52,7 +53,7 @@ const MyProfilePage = props => {
                     </div>
                   )
                 })}
-            </ul>
+            </ul> */}
           </div>
         )
       })}

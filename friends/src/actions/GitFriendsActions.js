@@ -6,6 +6,7 @@ export const FETCH_FAILURE = 'FETCH_FAILURE';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_ACTIVE_USER_SUCCESS = 'FETCH_ACTIVE_USER_SUCCESS';
 export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
+export const CREATION_SUCCESS = 'CREATION_SUCCESS';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
@@ -39,11 +40,28 @@ export const registerUser = (credentials, history) => dispatch => {
       dispatch({ type: REGISTRATION_SUCCESS, payload: response.data })
       localStorage.setItem('token', response.data.payload);
       localStorage.setItem('Active User', credentials.username)
-      history.push(`/myprofile`) // if I want id in url for later: `/myprofile/${response.data.id}`
+      history.push(`/`) // if I want id in url for later: `/myprofile/${response.data.id}`
     })
     .catch(error => {
       if(422){
         const errorAlert = `There is already an account under that username.`;
+        dispatch({ type: FETCH_FAILURE, payload: errorAlert })
+      }else{
+        dispatch({ type: FETCH_FAILURE, payload: error.response })}
+    })
+}
+
+export const createProfile = (profile, id) => dispatch => {
+  dispatch({ type: START_FETCHING });
+  axiosWithAuth()
+    .put(`/api/create/${id}`, profile)
+    .then(response => {
+      console.log('ADD FRIENDS', response.data[id-1])
+      dispatch({ type: CREATION_SUCCESS, payload: response.data[id-1] })
+    })
+    .catch(error => {
+      if(409){
+        const errorAlert = console.log(`NOOOOOOOOOOOOOOO!!!!!!!!!`);
         dispatch({ type: FETCH_FAILURE, payload: errorAlert })
       }else{
         dispatch({ type: FETCH_FAILURE, payload: error.response })}
@@ -55,7 +73,6 @@ export const loginUser = (credentials, history) => dispatch => {
   axiosWithAuth()
     .post('/api/login', credentials)
     .then(response => {
-      // console.log('RESPONSE', response, 'RESPONSE.DATA', response.data, 'RESPONSE.DATA.PAYLOAD', response.data.payload)
       dispatch({ type: LOGIN_SUCCESS, payload: response.data })
       localStorage.setItem('token', response.data.payload);
       localStorage.setItem('Active User', credentials.username)

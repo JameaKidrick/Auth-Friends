@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { avatarList } from '../AvatarList';
+import { connect, useSelector } from 'react-redux';
 
 // FORM
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
+
+// ACTIONS
+import { createProfile } from '../../../actions'
 
 // COMPONENTS
 import Questionnaire from './Questionnaire/QuestionnaireForm'
@@ -28,15 +32,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CreateProfileForm = () => {
+const CreateProfileForm = props => {
   const classes = useStyles();
   const [avatar, setAvatar] = useState()
   const [DOB, setDOB] = useState(new Date())
+  const [profile, setProfile] = useState()
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.createProfile(profile, props.id)
+    setProfile({profile: [
+      {avatar: ''}
+    ]})
+    console.log('PROFILE ON SUBMIT', profile)
+  }
 
   // RETRIEVING SELECTED AVATAR
   const choice = id => {
-    console.log(avatarList[id])
-    setAvatar(`${avatarList[id]}`)
+    // `${avatarList[id]}`
+    setAvatar(avatarList[id])
+    setProfile({profile: [
+      {avatar: `${avatarList[id]}`}
+    ]})
   }
 
   // CHOSEN DOB
@@ -82,8 +99,8 @@ const CreateProfileForm = () => {
   return(
     <div>   
       Hello CreateProfileForm!
-      
-      <Form style={{width:'50%', margin:'0 auto'}}>
+      {console.log(profile)}
+      <form style={{width:'50%', margin:'0 auto'}} onSubmit={handleSubmit}>
         <div>
           <h2>
             avatar selected:
@@ -147,9 +164,13 @@ const CreateProfileForm = () => {
           // value={user.location}
           />
         </div>
-      </Form>
+        <button>submit</button>
+      </form>
     </div>
   )
 }
 
-export default CreateProfileForm;
+export default connect(
+  null,
+  { createProfile }
+)(CreateProfileForm);

@@ -50,13 +50,13 @@ function App(props) {
             return <RegisterPage {...props}  />
           }} />
           {/* TEMPORARILY PUBLIC */}
-          <Route exact path='/api/register/createprofile' component={CreateProfilePage} />
+          {/* <Route exact path='/api/register/createprofile' component={CreateProfilePage} /> */}
           <Route path='/api/register/createprofile/favelanguage' component={FaveLanguagePage} />
           <Route path='/api/register/createprofile/questionnaire' component={QuestionnairePage} />
           {/* TEMPORARILY PUBLIC */}
 
           {/********************** PRIVATE ROUTES **********************/}
-          {/* <PrivateRoute path='/api/register/createprofile' component={CreateProfilePage} /> */}
+          <PrivateRoute exact path='/api/register/createprofile' component={CreateProfilePage} />
           <PrivateRoute exact path='/api/friends' component={FriendsListPage} />
           <PrivateRoute exact path='/myprofile' component={MyProfilePage} />
           <Route component={ErrorPage} />
