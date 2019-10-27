@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getActiveUserData } from '../../actions';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,19 +15,23 @@ const useStyles = makeStyles(theme => ({
 
 const MyProfilePage = props => {
   const classes = useStyles();
+  const [user, setUser] = useState([])
 
   useEffect(() => {
-    props.getActiveUserData();
+    // SETTING USER INTO STATE
+    props.getActiveUserData(setUser)
   }, [])
+  // console.log('MYPROFILE CURRENT USER', user)
 
   return (
     <div>
-      {props.activeUser.map(item => {
+      
+      {/* {props.activeUser.map(item => {
         return(
           <div key={item.id}>
             {console.log(item)}
             <Avatar src={item.profile[4].avatar} className={classes.bigAvatar}></Avatar>
-            <h1>{`${item.username} (ID Number: ${item.id})`}</h1>
+            <h1>{`${item.username} (ID Number: ${item.id})`}</h1> */}
             {/* <h2>{item.profile[0].location.toLowerCase()}</h2>
             <h2>birthdate: {item.profile[0].dob}</h2>
             <h2>about me: </h2>
@@ -54,9 +58,9 @@ const MyProfilePage = props => {
                   )
                 })}
             </ul> */}
-          </div>
+          {/* </div>
         )
-      })}
+      })} */}
     </div>
   )
 }

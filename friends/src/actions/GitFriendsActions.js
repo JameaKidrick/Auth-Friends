@@ -21,12 +21,17 @@ export const getUsersData = () => dispatch => {
     .catch(error => dispatch({ type: FETCH_FAILURE, payload: error.response }))
 }
 
-export const getActiveUserData = () => dispatch => {
+export const getActiveUserData = setUser => dispatch => {
   dispatch({ type: START_FETCHING });
   axiosWithAuth()
     .get('/activeUser')
     .then(response => {
-      // console.log('RESPONSE', response, 'RESPONSE.DATA', response.data, 'RESPONSE.DATA.PAYLOAD', response.data.payload)
+      // JUST IN CASE ACTIVE USER COLLECTS MULTIPLE USERS, THE FILTER WILL FIND THE ONE THAT IS LOGGED IN BASED ON LOCAL STORAGE'S USERNAME
+      const filter = response.data.find(item => {
+        return item.username === localStorage.getItem('Active User')
+      })
+      // console.log('FIND', filter)
+      setUser(filter)
       dispatch({ type: FETCH_ACTIVE_USER_SUCCESS, payload: response.data })
     })
     .catch(error => dispatch({ type: FETCH_FAILURE, payload: error.response }))

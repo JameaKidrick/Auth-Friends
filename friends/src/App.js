@@ -33,7 +33,7 @@ function App(props) {
         <br />
         {!props.loggedIn ? <Link to="/api/login">Login</Link> : props.loggedIn ? <Link to='/' onClick={() => logOut()}>Log out</Link> : false}
         <br />
-        {!props.loggedIn ? <Link to="/api/register">Register</Link> : console.log(props.loggedIn ? 'logged in' : 'logged out')}
+        {!props.loggedIn ? <Link to="/api/register">Register</Link> : console.log(props.loggedIn ? 'user logged in' : 'user logged out')}
         <br />
         <Link to='/api/register/createprofile'>Create Profile</Link>
         <br />
