@@ -5,24 +5,32 @@ import { connect, useSelector } from 'react-redux';
 // FORM
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { TextField } from 'formik-material-ui';
+// import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
 
 // ACTIONS
 import { createProfile } from '../../../actions'
 
-// COMPONENTS
-import Questionnaire from './Questionnaire/QuestionnaireForm'
-import FaveLanguage from './FaveLanguage/FaveLanguagePage';
-
 // STYLING
 import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Calendar from 'react-calendar';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormHelperText from '@material-ui/core/FormHelperText'
+import { grey, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
-  avatar: {
-    margin: 10,
+  root: {
+    color: grey['A400'],
+    fontSize: '135%',
+    // '&.Mui-focused': {
+    //   color: 'rgb(121,135,131)'
+    // }
   },
   bigAvatar: {
     margin: 10,
@@ -32,39 +40,63 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const ColoredRadio = withStyles({
+  root: {
+    color: "rgb(182,177,168)",
+    '&$checked': {
+      color: grey['A400'],
+    },
+  },
+  checked: {},
+})(props => <Radio color="default" {...props} />);
+
 const CreateProfileForm = props => {
   const classes = useStyles();
-  const [avatar, setAvatar] = useState()
-  const [DOB, setDOB] = useState(new Date())
-  const [profile, setProfile] = useState()
+  const [DOB, setDOB] = useState(new Date());
+  const [avatar, setAvatar] = useState();
+  const [format, setFormat] = useState('');
+  const [location, setLocation] = useState('');
+  const [about, setAbout] = useState('');
+  const [profile, setProfile] = useState();
+
+  // RETRIEVING SELECTED AVATAR
+  const avatarChoice = id => {
+    // `${avatarList[id]}`
+    setAvatar(avatarList[id])
+    setProfile({...profile, avatar: `${avatarList[id]}`})
+  }
+
+  const DOBChange = e => {
+    setFormat(e.target.value)
+    setProfile({...profile, dob: `${e.target.value}`})
+  }
+
+  const locationChange = e => {
+    setLocation(e.target.value)
+    setProfile({...profile, location: `${e.target.value}`})
+  }
+
+  const aboutChange = e => {
+    setAbout(e.target.value)
+    setProfile({...profile, about_me: `${e.target.value}`})
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
     props.createProfile(profile, props.id)
-    setProfile({profile: [
-      {avatar: ''}
-    ]})
+    setProfile({avatar: '', about_me: '', dob: '', location: ''})
     console.log('PROFILE ON SUBMIT', profile)
   }
 
-  // RETRIEVING SELECTED AVATAR
-  const choice = id => {
-    // `${avatarList[id]}`
-    setAvatar(avatarList[id])
-    setProfile({profile: [
-      {avatar: `${avatarList[id]}`}
-    ]})
-  }
+  // DOB FORMATS
+  const monthNames = [
+    "january", "february", "march",
+    "april", "may", "june", "july",
+    "august", "september", "october",
+    "november", "december"
+  ];
 
-  // CHOSEN DOB
   function formatFullDate(date) {
-    const monthNames = [
-      "january", "february", "march",
-      "april", "may", "june", "july",
-      "august", "september", "october",
-      "november", "december"
-    ];
-  
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
@@ -72,99 +104,101 @@ const CreateProfileForm = props => {
   }
 
   function formatShortDate(date) {
-    const monthNames = [
-      "january", "february", "march",
-      "april", "may", "june", "july",
-      "august", "september", "october",
-      "november", "december"
-    ];
-
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
     return `${monthNames[monthIndex]} ${year}`
   }
 
   function formatMonth(date) {
-    const monthNames = [
-      "january", "february", "march",
-      "april", "may", "june", "july",
-      "august", "september", "october",
-      "november", "december"
-    ];
-
     const monthIndex = date.getMonth();
     return `${monthNames[monthIndex]}`
   }
 
+  
+
   return(
     <div>   
       Hello CreateProfileForm!
-      {console.log(profile)}
       <form style={{width:'50%', margin:'0 auto'}} onSubmit={handleSubmit}>
         <div>
-          <h2>
-            avatar selected:
+          {/**************************** USER CAN SELECT AVATAR ****************************/}
+          <label>
+          <FormLabel component="legend" className={classes.root}>avatar selected:</FormLabel>
+          <FormHelperText error>required</FormHelperText>
             <Avatar src={avatar} className={classes.bigAvatar}></Avatar>
-          </h2>
-          <div style={{width:'50%', display:'flex', flexWrap:'wrap'}}>
+          </label>
+          <label style={{width:'50%', display:'flex', flexWrap:'wrap'}}>
             {avatarList.map((item, index) => {
-              return <Avatar key={index} src={item} alt='avatar image' className={classes.bigAvatar} onClick={()=>{choice(index)}} />
+              return <Avatar key={index} src={item} alt='avatar image' className={classes.bigAvatar} onClick={()=>{avatarChoice(index)}} />
             })}
-          </div>
+          </label>
         </div>
-        <input 
-        value={formatFullDate(DOB)}
-        readOnly
+        {/**************************** USER CAN SELECT DATE OF BIRTH ****************************/}
+        <FormLabel component="legend" className={classes.root}>birthdate:</FormLabel>
+        <FormHelperText error>required (birthdate can not be updated later)</FormHelperText>
+        <TextField
+          value={formatFullDate(DOB)}
+          margin="normal"
+          // variant="outlined"
+          InputProps={{
+            readOnly: true,
+            style:{textAlign:'center'}
+          }}
         />
         <br />
         <Calendar 
         onChange={(date)=>setDOB(date)} 
         calendarType='US'
         />
-        <div>
-          birthdate display:
-          <br />
-          <input 
-          type='radio'
-          name='DOB'
-          value={formatMonth(DOB)}
-          />mm
-          <br />
-          <input 
-          type='radio'
-          name='DOB'
-          value={formatShortDate(DOB)}
-          />mm yyyy
-          <br />
-          <input 
-          type='radio'
-          name='DOB'
-          value={formatFullDate(DOB)}
-          />mm dd yyyy
-          <br />
-          <input 
-          type='radio'
-          name='DOB'
-          // value=''
-          />don't display my birthdate
-        </div>
-        <div>
-          location:
-          <input 
+        <label>
+          <FormLabel component="legend" className={classes.root}>birthdate display:</FormLabel>
+          <RadioGroup aria-label="category" name="category" value={format} onChange={DOBChange}>
+            <FormControlLabel 
+              name='DOB'
+              value={formatMonth(DOB)}
+              control={<ColoredRadio />} 
+              label="mm" />
+            <FormControlLabel 
+              name='DOB'
+              value={formatShortDate(DOB)}
+              control={<ColoredRadio />} 
+              label="mm yyyy" />
+            <FormControlLabel 
+              name='DOB'
+              value={formatFullDate(DOB)}
+              control={<ColoredRadio />} 
+              label="mm dd yyyy" />
+            <FormControlLabel 
+              name='DOB'
+              value=''
+              control={<ColoredRadio />} 
+              label="don't display my birthdate" />
+          </RadioGroup>
+        </label>
+        {/**************************** USER CAN ADD LOCATION ****************************/}
+        <label>
+          <FormLabel component="legend" className={classes.root}>location:</FormLabel>
+          <TextField 
           type='text'
           name='location'
-          // value={user.location}
+          style={{width:'50%'}}
+          onChange={locationChange}
           />
-        </div>
-        <div>
-          about me:
-          <input 
-          type='textarea'
+        </label>
+        <br />
+        {/**************************** USER CAN ADD INFO ABOUT THEMSELVES ****************************/}
+        <label>
+          <FormLabel component="legend" className={classes.root}>about me:</FormLabel>
+          <TextField 
+          multiline
+          rows="2"
           name='location'
-          // value={user.location}
+          variant="outlined"
+          fullWidth
+          onChange={aboutChange}
           />
-        </div>
-        <button>submit</button>
+        </label>
+        <Button type='submit'>submit</Button>
       </form>
     </div>
   )

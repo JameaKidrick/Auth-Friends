@@ -19,9 +19,8 @@ let users = [
     id: 1,
     username: 'kimfox',
     password: 'love1',
-    // profile: [
+    avatar: '/static/media/1.66e813ce.jpg',
     //   {
-    //     avatar: '/static/media/1.66e813ce.jpg',
     //     about_me: `Hipster-friendly bacon maven. Beer fanatic. Total pop culture ninja. Freelance tv fanatic. Extreme music scholar. I don't like to make plans too far in advance because then the word "premeditated" gets thrown around in the courtroom.`,
     //     dob: 'july 2, 1983',
     //     location: 'Seattle, Washington',

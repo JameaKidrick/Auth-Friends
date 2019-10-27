@@ -21,23 +21,22 @@ const MyProfilePage = props => {
     // SETTING USER INTO STATE
     props.getActiveUserData(setUser)
   }, [])
-  // console.log('MYPROFILE CURRENT USER', user)
+  console.log('MYPROFILE CURRENT USER', user.avatar)
 
   return (
     <div>
+      <Avatar src={user.avatar} className={classes.bigAvatar}></Avatar>
       <h1>{`${user.username} (ID Number: ${user.id})`}</h1>
-      {/* {props.activeUser.map(item => {
-        return(
-          <div key={item.id}>
-            {console.log(item)}
-            <Avatar src={item.profile[4].avatar} className={classes.bigAvatar}></Avatar>
-            <h1>{`${item.username} (ID Number: ${item.id})`}</h1> */}
+      <h2>location: {user.location}</h2>
+      <h2>birthdate: {user.dob}</h2>
+      <h2>about me: {user.about_me}</h2>
+      {/* 
             {/* <h2>{item.profile[0].location.toLowerCase()}</h2>
-            <h2>birthdate: {item.profile[0].dob}</h2>
+            
             <h2>about me: </h2>
             <h5>{item.profile[0].aboutme}</h5>
             <h2>favorite languages:</h2>
-            <ul>
+            <ul> 
               {item.profile[0].favorite_languages.map(element => {
                 return <li>{element}</li>
               })}
