@@ -138,8 +138,8 @@ app.post('/api/users', (req, res) => {
 // MAIN PROFILE INFORMATION (CMP PAGE 1)
 app.put('/api/create/:id', authenticator, (req, res) => {
   const { id } = req.params;
-
   const userIndex = users.findIndex(item => item.id == id);
+  const userIndex2 = activeUser.findIndex(item => item.id == id);
 
   if (userIndex > -1) {
     const user = { ...users[userIndex], ...req.body };
@@ -148,7 +148,14 @@ app.put('/api/create/:id', authenticator, (req, res) => {
       user,
       ...users.slice(userIndex + 1)
     ];
-    activeUser[userIndex] =  user;
+
+    const user2 = { ...activeUser[userIndex2], ...req.body };
+    activeUser = [
+      ...activeUser.slice(0, userIndex2),
+      user2,
+      ...activeUser.slice(userIndex2 + 1)
+    ];
+
     res.send(users);
   } else {
     res.status(404).send({ msg: 'User not found' });

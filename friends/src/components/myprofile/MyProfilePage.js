@@ -25,7 +25,7 @@ const MyProfilePage = props => {
 
   return (
     <div>
-      
+      <h1>{`${user.username} (ID Number: ${user.id})`}</h1>
       {/* {props.activeUser.map(item => {
         return(
           <div key={item.id}>
@@ -65,13 +65,8 @@ const MyProfilePage = props => {
   )
 }
 
-const mapStateToProps = state => {
-  return{
-    activeUser: state.activeUser,
-  }
-}
 
 export default connect(
-  mapStateToProps,
+  null,
   { getActiveUserData }
 )(MyProfilePage);

@@ -49,7 +49,6 @@ export const reducer = (state = initialState, action) => {
         isFetching: false,
         error: '',
         loggedIn: true,
-        // activeUser:action.payload
       }
     case LOGIN_SUCCESS:
       return{
