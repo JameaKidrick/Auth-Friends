@@ -7,18 +7,21 @@ import { connect } from 'react-redux';
 import { getActiveUserData } from '../../../actions';
   // ADDED GET ACTIVE USER ACTION TO BRING IN LOGGEDIN STATE
 
-const CreateProfilePage = props => {
+const CreateProfilePage = ({getActiveUserData, history}) => {
 
   const [user, setUser] = useState([])
 
   useEffect(() => {
     // SETTING USER INTO STATE
-    props.getActiveUserData(setUser)
+    getActiveUserData(setUser)
   }, [])
 
   return(
     <div>
-      <CreateProfileForm id={user.id} />
+      <CreateProfileForm 
+      id={user.id} 
+      history={history}
+      />
       <Link to='/api/register/createprofile/questionnaire'>next: questionnaire &#x21FE;</Link>
     </div>
   )

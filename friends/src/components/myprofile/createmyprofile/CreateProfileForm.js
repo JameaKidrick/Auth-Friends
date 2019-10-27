@@ -50,42 +50,75 @@ const ColoredRadio = withStyles({
   checked: {},
 })(props => <Radio color="default" {...props} />);
 
-const CreateProfileForm = props => {
+const CreateProfileForm = ({createProfile, id, history}) => {
   const classes = useStyles();
   const [DOB, setDOB] = useState(new Date());
   const [avatar, setAvatar] = useState();
+  const [newDOB, setNewDOB] = useState(``);
   const [format, setFormat] = useState('');
-  const [location, setLocation] = useState('');
-  const [about, setAbout] = useState('');
+  // const [location, setLocation] = useState('');
+  // const [about, setAbout] = useState('');
   const [profile, setProfile] = useState();
+  const [errorAvatar, setErrorAvatar] = useState(false)
+  const [errorDOB, setErrorDOB] = useState(false)
 
   // RETRIEVING SELECTED AVATAR
   const avatarChoice = id => {
-    // `${avatarList[id]}`
     setAvatar(avatarList[id])
     setProfile({...profile, avatar: `${avatarList[id]}`})
   }
 
-  const DOBChange = e => {
-    setFormat(e.target.value)
-    setProfile({...profile, dob: `${e.target.value}`})
+  const addDOB = date => {
+    setDOB(date)
+    setNewDOB(DOB)
+    setProfile({...profile, dob: `${date}`})
+    console.log(date, DOB, newDOB)
   }
 
+  const DOBChange = e => {
+    setFormat(e.target.value)
+    setProfile({...profile, dob_display: `${e.target.value}`})
+  }
+  
   const locationChange = e => {
-    setLocation(e.target.value)
+    // setLocation(e.target.value)
     setProfile({...profile, location: `${e.target.value}`})
   }
 
   const aboutChange = e => {
-    setAbout(e.target.value)
+    // setAbout(e.target.value)
     setProfile({...profile, about_me: `${e.target.value}`})
   }
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.createProfile(profile, props.id)
-    setProfile({avatar: '', about_me: '', dob: '', location: ''})
-    console.log('PROFILE ON SUBMIT', profile)
+    // NO AVATAR AND NO DOB ERROR -> SET BOTH ERRORS TO TRUE
+    if((avatar === undefined ||avatar === '') && (newDOB === undefined || newDOB === '')){
+      setErrorAvatar(true)
+      setErrorDOB(true)
+      // console.log('ERROR LEVEL 1 - NO AVATAR OR DOB', avatar, newDOB)
+
+    // NO AVATAR ERROR AND DOB PRESENT -> SET AVATAR ERROR TO TRUE
+    }else if((avatar === undefined ||avatar === '') && (newDOB !== undefined || newDOB !== '')){
+      setErrorAvatar(true)
+      setErrorDOB(false)
+      // console.log('ERROR LEVEL 2 - NO AVATAR BUT DOB PRESENT', avatar, newDOB)
+
+    // AVATAR PRESENT AND NO DOB -> SET DOB ERROR TO TRUE
+    }else if((avatar !== undefined ||avatar !== '') && (newDOB === undefined || newDOB === '')){
+      setErrorAvatar(false)
+      setErrorDOB(true)
+      // console.log('ERROR LEVEL 3 - AVATAR PRESENT BUT NO DOB', avatar, newDOB)
+
+    }else{
+      setErrorAvatar(false)
+      setErrorDOB(false)
+      createProfile(profile, id)
+      setProfile({avatar: '', about_me: '', dob: `${DOB}`, dob_display: '', location: ''})
+      history.push('/api/register/createprofile/questionnaire')
+      // console.log('PROFILE ON SUBMIT', profile)
+      // console.log('NEWDOB', newDOB, 'DOB', DOB)
+    }
   }
 
   // DOB FORMATS
@@ -114,8 +147,6 @@ const CreateProfileForm = props => {
     return `${monthNames[monthIndex]}`
   }
 
-  
-
   return(
     <div>   
       Hello CreateProfileForm!
@@ -125,6 +156,9 @@ const CreateProfileForm = props => {
           <label>
           <FormLabel component="legend" className={classes.root}>avatar selected:</FormLabel>
           <FormHelperText error>required</FormHelperText>
+          {errorAvatar && (
+            <FormHelperText error>please choose an avatar</FormHelperText>
+          )}
             <Avatar src={avatar} className={classes.bigAvatar}></Avatar>
           </label>
           <label style={{width:'50%', display:'flex', flexWrap:'wrap'}}>
@@ -136,8 +170,12 @@ const CreateProfileForm = props => {
         {/**************************** USER CAN SELECT DATE OF BIRTH ****************************/}
         <FormLabel component="legend" className={classes.root}>birthdate:</FormLabel>
         <FormHelperText error>required (birthdate can not be updated later)</FormHelperText>
+        {errorDOB && (
+          <FormHelperText error>please set your birthdate</FormHelperText>
+        )}
         <TextField
-          value={formatFullDate(DOB)}
+          // defaultValue=''
+          value={newDOB === '' ? '':formatFullDate(DOB)}
           margin="normal"
           // variant="outlined"
           InputProps={{
@@ -147,7 +185,7 @@ const CreateProfileForm = props => {
         />
         <br />
         <Calendar 
-        onChange={(date)=>setDOB(date)} 
+        onChange = {date=>addDOB(date)}
         calendarType='US'
         />
         <label>
@@ -198,6 +236,12 @@ const CreateProfileForm = props => {
           onChange={aboutChange}
           />
         </label>
+        {errorAvatar && (
+          <FormHelperText error>please choose an avatar</FormHelperText>
+        )}
+        {errorDOB && (
+          <FormHelperText error>please set your birthdate</FormHelperText>
+        )}
         <Button type='submit'>submit</Button>
       </form>
     </div>

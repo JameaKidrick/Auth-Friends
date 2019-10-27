@@ -28,7 +28,7 @@ const MyProfilePage = props => {
       <Avatar src={user.avatar} className={classes.bigAvatar}></Avatar>
       <h1>{`${user.username} (ID Number: ${user.id})`}</h1>
       <h2>location: {user.location}</h2>
-      <h2>birthdate: {user.dob}</h2>
+      <h2>birthdate: {user.dob_display}</h2>
       <h2>about me: {user.about_me}</h2>
       {/* 
             {/* <h2>{item.profile[0].location.toLowerCase()}</h2>
