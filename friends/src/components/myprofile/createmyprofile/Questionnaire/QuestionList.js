@@ -20,3 +20,23 @@ export const questions = [
   'what’s the best single day on the calendar?',
   'what website do you visit most often?'
 ]
+
+// [ // ARRAY
+//   {
+  // questionnaire: [
+    // { // OBJECT
+      //     question: 'what is the most impressive thing you know how to do?', 
+      //     answer: 'whatever'
+      //   },
+      //   { // OBJECT
+      //     question: 'what is the most impressive thing you know how to do?', 
+      //     answer: ''
+      //   },
+      //   { // OBJECT
+      //     question: 'what is the most impressive thing you know how to do?', 
+      //     answer: 'whatever'
+      //   }
+  // ]
+// }
+// ]
+// if(answer !== ''){display}

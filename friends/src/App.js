@@ -37,9 +37,9 @@ function App(props) {
         <br />
         <Link to='/api/register/createprofile'>Create Profile</Link>
         <br />
-        <Link to='/api/register/createprofile/favelanguage'>Fave Language</Link>
-        <br />
         <Link to='/api/register/createprofile/questionnaire'>Questions</Link>
+        <br />
+        <Link to='/api/register/createprofile/favelanguage'>Fave Language</Link>
 
         <Switch>
           <Route exact path='/' component={HomePage} />
